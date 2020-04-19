@@ -18,6 +18,7 @@ void rightR(Node *x){
     // правый поворот O(1)
     // c'mon do something
 }
+
 void insert(int value){
     // обычная вставка как в бинарное дерево поиска - новая нода всегда красная с 2 черынми пустыми листьями (O(log n))
     // c'mon do something
@@ -34,6 +35,7 @@ void delete(Node *z){
     // удаление нужной вершины (O(log n))
     // c'mon do something
 }
+
 void deleteFixup(Node *x){
     // восстановление свойств кч-дерева после удаления (O(log n))
     // c'mon do something
@@ -44,7 +46,7 @@ void clear(Node *x){
     // c'mon do something
 }
 
-Node *tree_search(int value){
+Node *search(int value){
     // поиск ноды по значению - обычный поиск как в бинарном дереве поиска (O(log n))
     // c'mon do something
     return NULL;
