@@ -8,8 +8,8 @@ Node *createRBT(void){
     // выделение памяти под черный лист (пустое дерево)
     Node* tmp = malloc(sizeof(Node));
     tmp->color = BLACK;
-    tmp->*leftChild = NULL;
-    tmp->*rightChild = NULL;
+    tmp->leftChild = NULL;
+    tmp->rightChild = NULL;
     return tmp;
 }
 
