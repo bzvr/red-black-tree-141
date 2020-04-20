@@ -10,9 +10,41 @@ Node *createRBT(void){
     return NULL;
 }
 
-void leftR(Node *x) {
-    // левый поворот O(1)
-    // c'mon do something
+void leftR(Node **r)
+{
+    if (*r == NULL) exit(1);
+    Node* d=(*r)->rightChild;
+    if (d == NULL) exit(1);
+    if ((d->parent = (*r)->parent) != NULL)
+    {
+        if((*r)->parent->rightChild == *r)  
+            (*r)->parent->rightChild = d;
+        else
+            (*r)->parent->rightChild = d;
+    }
+    (*r)->rightChild = d->leftChild;
+    d->leftChild->parent = d->parent;
+    d->leftChild = *r;
+    (*r)->parent = d;
+    *r=d;
+}
+void rightR(Node **r)
+{
+    if (*r == NULL) exit(1);
+    Node* d=(*r)->leftChild;
+    if (d == NULL) exit(1);
+    if ((d->parent = (*r)->parent) != NULL)
+    {
+        if((*r)->parent->rightChild == *r)  
+            (*r)->parent->rightChild = d;
+        else
+            (*r)->parent->rightChild = d;
+    }
+    (*r)->leftChild = d->rightChild;
+    d->rightChild->parent = d->parent;
+    d->rightChild = *r;
+    (*r)->parent = d;
+    *r=d;
 }
 void rightR(Node *x){
     // правый поворот O(1)
@@ -50,6 +82,14 @@ Node *search(int value){
     // поиск ноды по значению - обычный поиск как в бинарном дереве поиска (O(log n))
     // c'mon do something
     return NULL;
+}
+
+void clear(Node *r)
+{
+    if (r == NULL) return;
+    clear(r->rightChild);
+    clear(r->leftChild);
+    free(r);
 }
 Node *min(Node *x){
     // поиск минимума
