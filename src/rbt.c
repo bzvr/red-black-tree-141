@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "rbt.h"
 
 Node *root;
@@ -6,17 +7,46 @@ Node *nilLeaf;
 
 Node *createRBT(void){
     // выделение памяти под черный лист (пустое дерево)
-    // c'mon do something
-    return NULL;
+    Node* tmp = malloc(sizeof(Node));
+    tmp->color = BLACK;
+    tmp->leftChild = NULL;
+    tmp->rightChild = NULL;
+    tmp->parent = NULL;
+    return tmp;
 }
 
-void leftR(Node *x) {
-    // левый поворот O(1)
-    // c'mon do something
+void leftR(Node **r) {
+    if (*r == NULL) exit(1);
+    Node *d = (*r)->rightChild;
+    if (d == NULL) exit(1);
+    if ((d->parent = (*r)->parent) != NULL) {
+        if ((*r)->parent->rightChild == *r)
+            (*r)->parent->rightChild = d;
+        else
+            (*r)->parent->leftChild = d;
+    }
+    (*r)->rightChild = d->leftChild;
+    d->leftChild->parent = d->parent;
+    d->leftChild = *r;
+    (*r)->parent = d;
+    *r = d;
 }
-void rightR(Node *x){
-    // правый поворот O(1)
-    // c'mon do something
+
+void rightR(Node **r) {
+    if (*r == NULL) exit(1);
+    Node *d = (*r)->leftChild;
+    if (d == NULL) exit(1);
+    if ((d->parent = (*r)->parent) != NULL) {
+        if ((*r)->parent->rightChild == *r)
+            (*r)->parent->rightChild = d;
+        else
+            (*r)->parent->leftChild = d;
+    }
+    (*r)->leftChild = d->rightChild;
+    d->rightChild->parent = d->parent;
+    d->rightChild = *r;
+    (*r)->parent = d;
+    *r = d;
 }
 
 void insert(int value){
@@ -29,7 +59,16 @@ void insertFixup(Node *z) {
 }
 void replace(Node *a, Node *b){
     // свап двух нод
-    // c'mon do something
+    Node* parentA;
+    Node* parentB;
+    parentA = a->parent;
+    parentB = b->parent;
+    if (parentA->leftChild == a) parentA->leftChild = b;
+    else parentA->rightChild = b;
+    if (parentB->leftChild == b) parentB->leftChild = a;
+    else parentB->rightChild = a;
+    a->parent = parentB;
+    b->parent = parentA;
 }
 void delete(Node *z){
     // удаление нужной вершины (O(log n))
@@ -41,14 +80,28 @@ void deleteFixup(Node *x){
     // c'mon do something
 }
 
-void clear(Node *x){
-    // очистка памяти от всех нод
-    // c'mon do something
+void clear(Node *r) {
+    if (r == NULL) return;
+    clear(r->rightChild);
+    clear(r->leftChild);
+    free(r);
 }
 
 Node *search(int value){
     // поиск ноды по значению - обычный поиск как в бинарном дереве поиска (O(log n))
-    // c'mon do something
+    while (root) {
+        if ((root->value) > (value)) {
+            root = root->leftChild;
+            continue;
+        }
+        else if ((root->value) < value) {
+        root = root->rightChild;
+        continue;
+        }
+        else {
+            return root;
+        }
+    }
     return NULL;
 }
 Node *min(Node *x){

@@ -10,8 +10,8 @@ typedef struct Node {
 } Node;
 
 
-void leftR(Node *);
-void rightR(Node *);
+void leftR(Node **);
+void rightR(Node **);
 void insert(int);
 void insertFixup(Node *);
 void replace(Node *, Node *);
