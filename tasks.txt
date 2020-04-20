@@ -1,0 +1,5 @@
+Настя: презентация, min, max
+Захар Г: leftR, rightR, clear
+Захар Н: insertFixup, insert
+Максим: createRBT, search, replace
+Лёня: delete, deleteFixup

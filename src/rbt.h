@@ -17,9 +17,10 @@ void insertFixup(Node *);
 void replace(Node *, Node *);
 void delete(Node *);
 void deleteFixup(Node *);
+void clear(Node *x);
 
 Node *createRBT(void);
-Node *tree_search(int);
+Node *search(int);
 Node *min(Node *);
 Node *max(Node *);
 
