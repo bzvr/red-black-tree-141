@@ -14,10 +14,11 @@ void leftR(Node **);
 void rightR(Node **);
 void insert(int);
 void insertFixup(Node *);
-void replace(Node *, Node *);
+void replace(Node **, Node *);
 void delete(Node *);
 void deleteFixup(Node *);
 void clear(Node *x);
+void print(Node *r, int);
 
 Node *createRBT(void);
 Node *search(int);

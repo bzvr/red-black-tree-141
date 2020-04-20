@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "rbt.h"
-
+#define COUNT 10
 Node *root;
 Node *nilLeaf;
 
@@ -16,9 +16,10 @@ Node *createRBT(void){
 }
 
 void leftR(Node **r) {
-    if (*r == NULL) exit(1);
+    if (*r == NULL) {exit(1);}
     Node *d = (*r)->rightChild;
     if (d == NULL) exit(1);
+
     if ((d->parent = (*r)->parent) != NULL) {
         if ((*r)->parent->rightChild == *r)
             (*r)->parent->rightChild = d;
@@ -26,7 +27,7 @@ void leftR(Node **r) {
             (*r)->parent->leftChild = d;
     }
     (*r)->rightChild = d->leftChild;
-    d->leftChild->parent = d->parent;
+    if (d->leftChild != NULL) d->leftChild->parent = *r;
     d->leftChild = *r;
     (*r)->parent = d;
     *r = d;
@@ -43,7 +44,7 @@ void rightR(Node **r) {
             (*r)->parent->leftChild = d;
     }
     (*r)->leftChild = d->rightChild;
-    d->rightChild->parent = d->parent;
+    if (d->rightChild != NULL) d->rightChild->parent = *r;
     d->rightChild = *r;
     (*r)->parent = d;
     *r = d;
@@ -57,22 +58,52 @@ void insertFixup(Node *z) {
     // после вставки восстанавливаем свойства кч-дерева (проверяем от вставленной до корня (O(log n))
     // c'mon do something
 }
-void replace(Node *a, Node *b){
-    // свап двух нод
-    Node* parentA;
-    Node* parentB;
-    parentA = a->parent;
-    parentB = b->parent;
-    if (parentA->leftChild == a) parentA->leftChild = b;
-    else parentA->rightChild = b;
-    if (parentB->leftChild == b) parentB->leftChild = a;
-    else parentB->rightChild = a;
-    a->parent = parentB;
-    b->parent = parentA;
+void replace(Node **a, Node *b){
+    if((*a)->parent == NULL){
+        *a = b;
+    }
+    if ((*a)->parent->leftChild == *a) (*a)->parent->leftChild = b;
+    else (*a)->parent->rightChild = b;
+    if (b != NULL) b ->parent = (*a)->parent;
 }
 void delete(Node *z){
-    // удаление нужной вершины (O(log n))
-    // c'mon do something
+    Node *y, *x;
+    int yOriginalColor;
+
+    y = z;
+    yOriginalColor = y->color;
+
+    if(z->leftChild == NULL){
+        x = z->rightChild;
+        replace(&z, z->rightChild);
+    }
+    else if(z->rightChild == NULL){
+        x = z->leftChild;
+        replace(&z, z->leftChild);
+    }
+    else {
+        y = min(z->rightChild);
+        yOriginalColor = y->color;
+
+        x = y->rightChild;
+
+        if(y->parent == z){
+            x->parent = y;
+        }
+        else{
+            replace(&y, y->rightChild);
+            y->rightChild = z->rightChild;
+            y->rightChild->parent = y;
+        }
+
+        replace(&z, y);
+        y->leftChild = z->leftChild;
+        y->leftChild->parent = y;
+        y->color = z->color;
+    }
+    if(yOriginalColor == BLACK){
+        deleteFixup(x);
+    }
 }
 
 void deleteFixup(Node *x){
@@ -113,4 +144,16 @@ Node *max(Node *x){
     // поиск максимума
     // c'mon do something
     return NULL;
+}
+
+void print(Node *r, int s){
+    if (r == NULL)
+        return;
+    s += COUNT;
+    print(r->rightChild, s);
+    printf("\n");
+    for (int i = COUNT; i < s; i++)
+        printf(" ");
+    printf("%d_%d\n", r->value, r->color);
+    print(r->leftChild, s);
 }
