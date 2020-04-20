@@ -59,12 +59,14 @@ void insertFixup(Node *z) {
 }
 void replace(Node *a, Node *b){
     // свап двух нод
-    Node* parentA, parentB = b->parent;
+    Node* parentA;
+    Node* parentB;
     parentA = a->parent;
+    parentB = b->parent;
     if (parentA->leftChild == a) parentA->leftChild = b;
-    else parentA->RightChild = b;
+    else parentA->rightChild = b;
     if (parentB->leftChild == b) parentB->leftChild = a;
-    else parentB->RightChild = a;
+    else parentB->rightChild = a;
     a->parent = parentB;
     b->parent = parentA;
 }
@@ -89,11 +91,11 @@ Node *search(int value){
     // поиск ноды по значению - обычный поиск как в бинарном дереве поиска (O(log n))
     while (root) {
         if ((root->value) > (value)) {
-            root = root->left;
+            root = root->leftChild;
             continue;
         }
-        else if ((root->value) < value)) {
-        root = root->right;
+        else if ((root->value) < value) {
+        root = root->rightChild;
         continue;
         }
         else {
