@@ -10,6 +10,7 @@ Node *createRBT(void){
     tmp->color = BLACK;
     tmp->leftChild = NULL;
     tmp->rightChild = NULL;
+    tmp->parent = NULL;
     return tmp;
 }
 
