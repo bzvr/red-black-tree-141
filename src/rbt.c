@@ -26,7 +26,7 @@ void leftR(Node **r) {
             (*r)->parent->leftChild = d;
     }
     (*r)->rightChild = d->leftChild;
-    d->leftChild->parent = d->parent;
+    if (d->leftChild != NULL) d->leftChild->parent = *r;
     d->leftChild = *r;
     (*r)->parent = d;
     *r = d;
@@ -43,7 +43,7 @@ void rightR(Node **r) {
             (*r)->parent->leftChild = d;
     }
     (*r)->leftChild = d->rightChild;
-    d->rightChild->parent = d->parent;
+    if (d->rightChild != NULL) d->rightChild->parent = *r;
     d->rightChild = *r;
     (*r)->parent = d;
     *r = d;
