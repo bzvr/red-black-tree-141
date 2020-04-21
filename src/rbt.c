@@ -113,8 +113,7 @@ Node *min(Node *x){
 			tmp_min = tmp_min -> leftChild;
 		return tmp_min;
 	}
-	else
-		return NULL;
+    return NULL;
 }
 
 Node *max(Node *x){
@@ -125,6 +124,5 @@ Node *max(Node *x){
 			tmp_max = tmp_max -> leftChild;
 		return tmp_max;
 	}
-	else
-		return NULL;
+    return NULL;
 }
