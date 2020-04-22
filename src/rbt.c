@@ -12,7 +12,7 @@ Node *createRBT(void){
     nilLeaf->color = BLACK;
     nilLeaf->leftChild = NULL;
     nilLeaf->rightChild = NULL;
-    if (scanf("%d", k)==1) {
+    if (scanf("%d", &k)==1) {
         Node* tmp = malloc(sizeof(Node));
         tmp->color = BLACK;
         tmp->leftChild = nilLeaf;
@@ -21,7 +21,7 @@ Node *createRBT(void){
         tmp->parent = NULL;
     }
     else return NULL;
-    while (scanf("%d", k)==1) insert(&tmp, k);
+    while (scanf("%d", &k)==1) insert(&tmp, k);
     return tmp;
 }
 
