@@ -7,11 +7,21 @@ Node *nilLeaf;
 
 Node *createRBT(void){
     // выделение памяти под черный лист (пустое дерево)
-    Node* tmp = malloc(sizeof(Node));
-    tmp->color = BLACK;
-    tmp->leftChild = NULL;
-    tmp->rightChild = NULL;
-    tmp->parent = NULL;
+    int k;
+    nilLeaf = malloc(sizeof(Node));
+    nilLeaf->color = BLACK;
+    nilLeaf->leftChild = NULL;
+    nilLeaf->rightChild = NULL;
+    if (scanf("%d", k)==1) {
+        Node* tmp = malloc(sizeof(Node));
+        tmp->color = BLACK;
+        tmp->leftChild = nilLeaf;
+        tmp->rightChild = nilLeaf;
+        tmp->key = k;
+        tmp->parent = NULL;
+    }
+    else return NULL;
+    while (scanf("%d", k)==1) insert(&tmp, k);
     return tmp;
 }
 
