@@ -4,22 +4,23 @@
 #define BLACK 1
 
 typedef struct Node {
-    int value;
+    int key;
     int color;
     struct Node *parent, *leftChild, *rightChild;
 } Node;
 
 
-void leftR(Node *);
-void rightR(Node *);
+void leftR(Node **);
+void rightR(Node **);
 void insert(int);
 void insertFixup(Node *);
 void replace(Node *, Node *);
 void delete(Node *);
 void deleteFixup(Node *);
+void clear(Node *x);
 
 Node *createRBT(void);
-Node *tree_search(int);
+Node *search(int);
 Node *min(Node *);
 Node *max(Node *);
 
