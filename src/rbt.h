@@ -4,7 +4,7 @@
 #define BLACK 1
 
 typedef struct Node {
-    int value;
+    int key;
     int color;
     struct Node *parent, *leftChild, *rightChild;
 } Node;

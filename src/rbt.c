@@ -7,11 +7,21 @@ Node *nilLeaf;
 
 Node *createRBT(void){
     // выделение памяти под черный лист (пустое дерево)
-    Node* tmp = malloc(sizeof(Node));
-    tmp->color = BLACK;
-    tmp->leftChild = NULL;
-    tmp->rightChild = NULL;
-    tmp->parent = NULL;
+    int k;
+    nilLeaf = malloc(sizeof(Node));
+    nilLeaf->color = BLACK;
+    nilLeaf->leftChild = NULL;
+    nilLeaf->rightChild = NULL;
+    if (scanf("%d", &k)==1) {
+        Node* tmp = malloc(sizeof(Node));
+        tmp->color = BLACK;
+        tmp->leftChild = nilLeaf;
+        tmp->rightChild = nilLeaf;
+        tmp->key = k;
+        tmp->parent = NULL;
+    }
+    else return NULL;
+    while (scanf("%d", &k)==1) insert(&tmp, k);
     return tmp;
 }
 
@@ -50,7 +60,7 @@ void rightR(Node **r) {
     *r = d;
 }
 
-void insert(int value){
+void insert(int key){
     // обычная вставка как в бинарное дерево поиска - новая нода всегда красная с 2 черынми пустыми листьями (O(log n))
     // c'mon do something
 }
@@ -118,14 +128,14 @@ void clear(Node *r) {
     free(r);
 }
 
-Node *search(int value){
+Node *search(int key){
     // поиск ноды по значению - обычный поиск как в бинарном дереве поиска (O(log n))
     while (root) {
-        if ((root->value) > (value)) {
+        if ((root->key) > (key)) {
             root = root->leftChild;
             continue;
         }
-        else if ((root->value) < value) {
+        else if ((root->key) < key) {
         root = root->rightChild;
         continue;
         }
@@ -135,14 +145,26 @@ Node *search(int value){
     }
     return NULL;
 }
+
 Node *min(Node *x){
-    // поиск минимума
-    // c'mon do something
+    Node *tmp_min;
+    if (x){
+		tmp_min = x;
+		while (tmp_min -> leftChild)
+			tmp_min = tmp_min -> leftChild;
+		return tmp_min;
+	}
     return NULL;
 }
+
 Node *max(Node *x){
-    // поиск максимума
-    // c'mon do something
+    Node *tmp_max;
+    if (x){
+		tmp_max = x;
+		while (tmp_max -> leftChild)
+			tmp_max = tmp_max -> leftChild;
+		return tmp_max;
+	}
     return NULL;
 }
 
