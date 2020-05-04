@@ -12,7 +12,7 @@ typedef struct Node {
 
 void leftR(Node **);
 void rightR(Node **);
-void insert(int);
+void insert(Node **r, int value);
 void insertFixup(Node *);
 void replace(Node **, Node *);
 void delete(Node *);

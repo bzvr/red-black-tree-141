@@ -5,15 +5,21 @@
 Node *root;
 Node *nilLeaf;
 
+void insert_case2(Node *z);
+void insert_case3(Node *z);
+void insert_case4(Node *z);
+void insert_case5(Node *z);
+
 Node *createRBT(void){
     // выделение памяти под черный лист (пустое дерево)
     int k;
+    Node* tmp;
     nilLeaf = malloc(sizeof(Node));
     nilLeaf->color = BLACK;
     nilLeaf->leftChild = NULL;
     nilLeaf->rightChild = NULL;
     if (scanf("%d", &k)==1) {
-        Node* tmp = malloc(sizeof(Node));
+        tmp = malloc(sizeof(Node));
         tmp->color = BLACK;
         tmp->leftChild = nilLeaf;
         tmp->rightChild = nilLeaf;
@@ -68,9 +74,9 @@ void insert(Node **r, int value){
 		ptr->key = value;
 		ptr->leftChild = nilLeaf;
 		ptr->leftChild = nilLeaf;
-		ptr->parent = NULL:
+		ptr->parent = NULL;
 		*r = ptr;
-		return
+		return;
 	}
 	current = *r;
 	while (!(current->leftChild == nilLeaf && current->rightChild == nilLeaf)){
@@ -84,14 +90,14 @@ void insert(Node **r, int value){
 	ptr->key = value;
 	ptr->leftChild = nilLeaf;
 	ptr->leftChild = nilLeaf;
-	ptr->parent = current:
+	ptr->parent = current;
 	if (value < current->key) current->leftChild = ptr;
 	else current->rightChild = ptr;
 	insertFixup(ptr);
 }
 void insertFixup(Node *z){
 	if (z->parent == NULL) 
-		z.color = BLACK;
+		z->color = BLACK;
 	else 
 		insert_case2(z);
 }
@@ -105,7 +111,7 @@ void insert_case3(Node *z){
 	Node *uncle;
 	if (z->parent->parent){
 		if (z->parent->parent->leftChild != z->parent) uncle = z->parent->parent->leftChild;
-		else z->parent->parent->rightChild;
+		else uncle = z->parent->parent->rightChild;
 		if (uncle->color == RED){
 			uncle->color = BLACK;
 			uncle->parent->color ^= 1;
@@ -119,12 +125,12 @@ void insert_case3(Node *z){
 void insert_case4(Node *z){
 	if ((z->parent->rightChild == z) && (z->parent == z->parent->parent->leftChild)){
 		leftR(&(z->parent));
-		z = z->left;
+		z = z->leftChild;
 	}
 	else{
 		if ((z->parent->leftChild == z) && (z->parent == z->parent->parent->rightChild)){
 			rightR(&(z->parent));
-			z = z->right;
+			z = z->rightChild;
 		}
 	}
 	insert_case5(z);
@@ -132,11 +138,10 @@ void insert_case4(Node *z){
 void insert_case5(Node *z){
 	z->parent->color ^= 1;
 	z->parent->parent->color ^= 1;
-	if ((z->parent->leftChild == z) && (z->parent == z->parent->parent->leftChild)){
+	if ((z->parent->leftChild == z) && (z->parent == z->parent->parent->leftChild))
 		rightR(&(z->parent->parent));
 	else
 		leftR(&(z->parent->parent));
-	}
 }
 void replace(Node **a, Node *b){
     if((*a)->parent == NULL){
@@ -246,6 +251,6 @@ void print(Node *r, int s){
     printf("\n");
     for (int i = COUNT; i < s; i++)
         printf(" ");
-    printf("%d_%d\n", r->value, r->color);
+    printf("%d_%d\n", r->key, r->color);
     print(r->leftChild, s);
 }
