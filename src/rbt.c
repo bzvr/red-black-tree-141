@@ -5,92 +5,81 @@
 Node *root;
 Node *nilLeaf;
 
-void insert_case2(Node *z);
-void insert_case3(Node *z);
-void insert_case4(Node *z);
-void insert_case5(Node *z);
-
 Node *createRBT(void){
     // выделение памяти под черный лист (пустое дерево)
     int k;
-    Node* tmp;
     nilLeaf = malloc(sizeof(Node));
     nilLeaf->color = BLACK;
     nilLeaf->leftChild = NULL;
     nilLeaf->rightChild = NULL;
     if (scanf("%d", &k)==1) {
-        tmp = malloc(sizeof(Node));
-        tmp->color = BLACK;
-        tmp->leftChild = nilLeaf;
-        tmp->rightChild = nilLeaf;
-        tmp->key = k;
-        tmp->parent = NULL;
+        root = malloc(sizeof(Node));
+        root->color = BLACK;
+        root->leftChild = nilLeaf;
+        root->rightChild = nilLeaf;
+        root->key = k;
+        root->parent = NULL;
     }
     else return NULL;
-    while (scanf("%d", &k)==1) insert(&tmp, k);
-    return tmp;
+    while (scanf("%d", &k)==1) insert(k);
+    return root;
 }
 
-void leftR(Node **r) {
-    if (*r == NULL) {exit(1);}
-    Node *d = (*r)->rightChild;
+void leftR(Node *r) {
+    if (r == NULL) {exit(1);}
+    Node *d = r->rightChild;
     if (d == NULL) exit(1);
 
-    if ((d->parent = (*r)->parent) != NULL) {
-        if ((*r)->parent->rightChild == *r)
-            (*r)->parent->rightChild = d;
-        else
-            (*r)->parent->leftChild = d;
-    }
-    (*r)->rightChild = d->leftChild;
-    if (d->leftChild != NULL) d->leftChild->parent = *r;
-    d->leftChild = *r;
-    (*r)->parent = d;
-    *r = d;
+    if ((d->parent = r->parent) == NULL) root = d;
+    else if (r->parent->rightChild == r) r->parent->rightChild = d;
+    else r->parent->leftChild = d;
+
+    r->rightChild = d->leftChild;
+    if (d->leftChild != nilLeaf) d->leftChild->parent = r;
+    d->leftChild = r;
+    r->parent = d;
 }
 
-void rightR(Node **r) {
-    if (*r == NULL) exit(1);
-    Node *d = (*r)->leftChild;
+void rightR(Node *r) {
+    if (r == NULL) exit(1);
+    Node *d = r->leftChild;
     if (d == NULL) exit(1);
-    if ((d->parent = (*r)->parent) != NULL) {
-        if ((*r)->parent->rightChild == *r)
-            (*r)->parent->rightChild = d;
-        else
-            (*r)->parent->leftChild = d;
-    }
-    (*r)->leftChild = d->rightChild;
-    if (d->rightChild != NULL) d->rightChild->parent = *r;
-    d->rightChild = *r;
-    (*r)->parent = d;
-    *r = d;
-}
-#include <stdio.h>
 
-void insert(Node **r, int value){
+    if ((d->parent = r->parent) == NULL) root = d;
+    else if (r->parent->rightChild == r) r->parent->rightChild = d;
+    else r->parent->leftChild = d;
+
+    r->leftChild = d->rightChild;
+    if (d->rightChild != nilLeaf) d->rightChild->parent = r;
+    d->rightChild = r;
+    r->parent = d;
+}
+
+void insert(int value){
 	Node *ptr, *current;
-	if (!*r){
-		ptr = malloc(sizeof(Node));
-		ptr->key = value;
-		ptr->leftChild = nilLeaf;
-		ptr->leftChild = nilLeaf;
-		ptr->parent = NULL;
-		*r = ptr;
+	if (!root){
+		root = malloc(sizeof(Node));
+        root->color = BLACK;
+        root->key = value;
+        root->leftChild = nilLeaf;
+        root->leftChild = nilLeaf;
+        root->parent = NULL;
 		return;
 	}
-	current = *r;
+	current = root;
 	while (!(current->leftChild == nilLeaf && current->rightChild == nilLeaf)){
-		if (current->key > value && current->leftChild) current = current->leftChild;
+		if (current->key > value && current->leftChild != nilLeaf) current = current->leftChild;
 		else{
-			if (current->key <= value && current->rightChild) current = current->rightChild;
+			if (current->key <= value && current->rightChild != nilLeaf) current = current->rightChild;
 			else break;
 		}
 	}
 	ptr = malloc(sizeof(Node));
 	ptr->key = value;
 	ptr->leftChild = nilLeaf;
-	ptr->leftChild = nilLeaf;
+	ptr->rightChild = nilLeaf;
 	ptr->parent = current;
+	ptr->color = RED;
 	if (value < current->key) current->leftChild = ptr;
 	else current->rightChild = ptr;
 	insertFixup(ptr);
@@ -124,12 +113,12 @@ void insert_case3(Node *z){
 }
 void insert_case4(Node *z){
 	if ((z->parent->rightChild == z) && (z->parent == z->parent->parent->leftChild)){
-		leftR(&(z->parent));
+		leftR(z->parent);
 		z = z->leftChild;
 	}
 	else{
 		if ((z->parent->leftChild == z) && (z->parent == z->parent->parent->rightChild)){
-			rightR(&(z->parent));
+			rightR(z->parent);
 			z = z->rightChild;
 		}
 	}
@@ -139,9 +128,9 @@ void insert_case5(Node *z){
 	z->parent->color ^= 1;
 	z->parent->parent->color ^= 1;
 	if ((z->parent->leftChild == z) && (z->parent == z->parent->parent->leftChild))
-		rightR(&(z->parent->parent));
+		rightR(z->parent->parent);
 	else
-		leftR(&(z->parent->parent));
+		leftR(z->parent->parent);
 }
 void replace(Node **a, Node *b){
     if((*a)->parent == NULL){
@@ -246,11 +235,25 @@ Node *max(Node *x){
 void print(Node *r, int s){
     if (r == NULL)
         return;
+    if (r->rightChild == NULL && r->leftChild != NULL){
+        for (int i = COUNT; i < s + 2 * COUNT; i++)
+            printf(" ");
+        printf("NIL\n");
+    }
     s += COUNT;
     print(r->rightChild, s);
     printf("\n");
     for (int i = COUNT; i < s; i++)
         printf(" ");
-    printf("%d_%d\n", r->key, r->color);
+    if (r->leftChild == NULL && r->rightChild == NULL) printf("NIL\n");
+    else printf("%d_%s\n", r->key, Colors[r->color]);
     print(r->leftChild, s);
+}
+
+void print_keys(Node *x){
+    if(x != nilLeaf){
+        print_keys(x->leftChild);
+        printf("%d\t", x->key);
+        print_keys(x->rightChild);
+    }
 }
