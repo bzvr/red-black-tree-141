@@ -185,6 +185,7 @@ void delete(Node *z) {
     if (origColor == BLACK) {
         deleteFixup(x);
     }
+    free(z);
     if (root == nilLeaf) {
         free(root);
         root = NULL;
